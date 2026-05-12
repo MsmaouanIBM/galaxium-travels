@@ -11,40 +11,35 @@ export const Header = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-30 bg-carbon-ui-background border-b border-carbon-border-subtle">
-      <div className="container mx-auto px-4 py-04">
+    <header className="fixed top-0 left-0 right-0 z-30 bg-[#0a0e1a] border-b border-gray-800">
+      <div className="container mx-auto px-6 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <motion.div
-              whileHover={{ rotate: 15 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Rocket className="text-transparent bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text" size={32} style={{ WebkitTextFillColor: 'transparent', WebkitBackgroundClip: 'text' }} />
-            </motion.div>
-            <span className="text-2xl font-normal bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+            <Rocket className="text-purple-500" size={24} />
+            <span className="text-lg font-normal bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
               Galaxium Travels
             </span>
           </Link>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center gap-05">
+          <nav className="flex items-center gap-6">
             <Link
               to="/"
-              className={`text-sm font-normal px-04 py-02 transition-colors ${
+              className={`text-sm transition-colors ${
                 isActive('/')
-                  ? 'text-carbon-text-primary bg-carbon-layer-02'
-                  : 'text-carbon-text-secondary hover:text-carbon-text-primary hover:bg-carbon-layer-01'
+                  ? 'text-white'
+                  : 'text-gray-400 hover:text-white'
               }`}
             >
               Home
             </Link>
             <Link
               to="/flights"
-              className={`text-sm font-normal px-04 py-02 transition-colors ${
+              className={`text-sm transition-colors ${
                 isActive('/flights')
-                  ? 'text-carbon-text-primary bg-carbon-layer-02'
-                  : 'text-carbon-text-secondary hover:text-carbon-text-primary hover:bg-carbon-layer-01'
+                  ? 'text-white'
+                  : 'text-gray-400 hover:text-white'
               }`}
             >
               Flights
@@ -52,10 +47,10 @@ export const Header = () => {
             {user && (
               <Link
                 to="/bookings"
-                className={`text-sm font-normal px-04 py-02 transition-colors ${
+                className={`text-sm transition-colors ${
                   isActive('/bookings')
-                    ? 'text-carbon-text-primary bg-carbon-layer-02'
-                    : 'text-carbon-text-secondary hover:text-carbon-text-primary hover:bg-carbon-layer-01'
+                    ? 'text-white'
+                    : 'text-gray-400 hover:text-white'
                 }`}
               >
                 My Bookings
@@ -64,23 +59,21 @@ export const Header = () => {
           </nav>
 
           {/* User Section */}
-          <div className="flex items-center gap-03">
+          <div className="flex items-center gap-4">
             {user && (
-              <div className="flex items-center gap-03">
-                <div className="hidden md:flex items-center gap-02 text-sm px-03 py-02 bg-carbon-layer-01">
-                  <User size={16} className="text-carbon-interactive" />
-                  <span className="text-carbon-text-primary">Siddhartha Sood</span>
+              <>
+                <div className="flex items-center gap-2 text-sm text-gray-300">
+                  <User size={16} className="text-purple-400" />
+                  <span>User: Siddhartha Sood</span>
                 </div>
-                <Button
-                  variant="tertiary"
-                  size="sm"
+                <button
                   onClick={logout}
-                  className="flex items-center gap-02"
+                  className="flex items-center gap-2 px-3 py-1.5 text-sm text-white bg-gray-800 hover:bg-gray-700 rounded transition-colors"
                 >
-                  <LogOut size={16} />
-                  <span className="hidden md:inline">Logout</span>
-                </Button>
-              </div>
+                  <LogOut size={14} />
+                  <span>Logout</span>
+                </button>
+              </>
             )}
           </div>
         </div>

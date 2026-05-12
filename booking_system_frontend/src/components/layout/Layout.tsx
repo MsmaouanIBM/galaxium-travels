@@ -43,7 +43,7 @@ export const Layout = ({ children }: LayoutProps) => {
       <Header />
       
       {/* Main content */}
-      <main className="relative z-10 flex-1 pt-24 pb-8">
+      <main className="relative z-10 flex-1 pt-16 pb-8">
         <div className="container mx-auto px-4">
           {children}
         </div>

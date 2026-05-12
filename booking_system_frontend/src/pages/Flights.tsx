@@ -78,18 +78,18 @@ export const Flights = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center"
+        className="text-center pt-2"
       >
-        <h1 className="text-4xl md:text-5xl font-bold mb-2">
+        <h1 className="text-3xl md:text-4xl font-bold mb-1">
           <span className="text-white">Available </span>
           <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Flights</span>
         </h1>
-        <p className="text-star-white/70 text-lg">
+        <p className="text-gray-400 text-base">
           Choose your destination and embark on an interplanetary adventure
         </p>
       </motion.div>
@@ -99,7 +99,7 @@ export const Flights = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="glass-card p-6"
+        className="glass-card p-4"
       >
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search */}
@@ -142,7 +142,7 @@ export const Flights = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
         >
           {filteredFlights.map((flight) => (
             <FlightCard
