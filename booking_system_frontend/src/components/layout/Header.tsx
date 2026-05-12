@@ -11,8 +11,8 @@ export const Header = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-30 glass-card border-b border-white/10">
-      <div className="container mx-auto px-4 py-4">
+    <header className="fixed top-0 left-0 right-0 z-30 bg-carbon-ui-background border-b border-carbon-border-subtle">
+      <div className="container mx-auto px-4 py-04">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
@@ -20,31 +20,31 @@ export const Header = () => {
               whileHover={{ rotate: 15 }}
               transition={{ duration: 0.3 }}
             >
-              <Rocket className="text-cosmic-purple" size={32} />
+              <Rocket className="text-carbon-interactive" size={32} />
             </motion.div>
-            <span className="text-2xl font-bold bg-cosmic-gradient bg-clip-text text-transparent">
+            <span className="text-2xl font-normal text-carbon-text-primary">
               Galaxium Travels
             </span>
           </Link>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-05">
             <Link
               to="/"
-              className={`text-sm font-medium transition-colors ${
+              className={`text-sm font-normal px-04 py-02 transition-colors ${
                 isActive('/')
-                  ? 'text-cosmic-purple'
-                  : 'text-star-white/70 hover:text-star-white'
+                  ? 'text-carbon-text-primary bg-carbon-layer-02'
+                  : 'text-carbon-text-secondary hover:text-carbon-text-primary hover:bg-carbon-layer-01'
               }`}
             >
               Home
             </Link>
             <Link
               to="/flights"
-              className={`text-sm font-medium transition-colors ${
+              className={`text-sm font-normal px-04 py-02 transition-colors ${
                 isActive('/flights')
-                  ? 'text-cosmic-purple'
-                  : 'text-star-white/70 hover:text-star-white'
+                  ? 'text-carbon-text-primary bg-carbon-layer-02'
+                  : 'text-carbon-text-secondary hover:text-carbon-text-primary hover:bg-carbon-layer-01'
               }`}
             >
               Flights
@@ -52,10 +52,10 @@ export const Header = () => {
             {user && (
               <Link
                 to="/bookings"
-                className={`text-sm font-medium transition-colors ${
+                className={`text-sm font-normal px-04 py-02 transition-colors ${
                   isActive('/bookings')
-                    ? 'text-cosmic-purple'
-                    : 'text-star-white/70 hover:text-star-white'
+                    ? 'text-carbon-text-primary bg-carbon-layer-02'
+                    : 'text-carbon-text-secondary hover:text-carbon-text-primary hover:bg-carbon-layer-01'
                 }`}
               >
                 My Bookings
@@ -64,18 +64,18 @@ export const Header = () => {
           </nav>
 
           {/* User Section */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-03">
             {user ? (
-              <div className="flex items-center gap-3">
-                <div className="hidden md:flex items-center gap-2 text-sm">
-                  <User size={16} className="text-cosmic-purple" />
-                  <span className="text-star-white">{user.name}</span>
+              <div className="flex items-center gap-03">
+                <div className="hidden md:flex items-center gap-02 text-sm px-03 py-02 bg-carbon-layer-01">
+                  <User size={16} className="text-carbon-interactive" />
+                  <span className="text-carbon-text-primary">{user.name}</span>
                 </div>
                 <Button
-                  variant="secondary"
+                  variant="tertiary"
                   size="sm"
                   onClick={logout}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-02"
                 >
                   <LogOut size={16} />
                   <span className="hidden md:inline">Logout</span>
@@ -90,23 +90,23 @@ export const Header = () => {
         </div>
 
         {/* Mobile Navigation */}
-        <nav className="md:hidden flex items-center gap-4 mt-4 pt-4 border-t border-white/10">
+        <nav className="md:hidden flex items-center gap-03 mt-03 pt-03 border-t border-carbon-border-subtle">
           <Link
             to="/"
-            className={`text-sm font-medium transition-colors ${
+            className={`text-sm font-normal px-03 py-02 transition-colors ${
               isActive('/')
-                ? 'text-cosmic-purple'
-                : 'text-star-white/70 hover:text-star-white'
+                ? 'text-carbon-text-primary bg-carbon-layer-02'
+                : 'text-carbon-text-secondary hover:text-carbon-text-primary'
             }`}
           >
             Home
           </Link>
           <Link
             to="/flights"
-            className={`text-sm font-medium transition-colors ${
+            className={`text-sm font-normal px-03 py-02 transition-colors ${
               isActive('/flights')
-                ? 'text-cosmic-purple'
-                : 'text-star-white/70 hover:text-star-white'
+                ? 'text-carbon-text-primary bg-carbon-layer-02'
+                : 'text-carbon-text-secondary hover:text-carbon-text-primary'
             }`}
           >
             Flights
@@ -114,10 +114,10 @@ export const Header = () => {
           {user && (
             <Link
               to="/bookings"
-              className={`text-sm font-medium transition-colors ${
+              className={`text-sm font-normal px-03 py-02 transition-colors ${
                 isActive('/bookings')
-                  ? 'text-cosmic-purple'
-                  : 'text-star-white/70 hover:text-star-white'
+                  ? 'text-carbon-text-primary bg-carbon-layer-02'
+                  : 'text-carbon-text-secondary hover:text-carbon-text-primary'
               }`}
             >
               My Bookings
@@ -129,4 +129,4 @@ export const Header = () => {
   );
 };
 
-// Made with Bob
+// Made with Bob - IBM Carbon Design System

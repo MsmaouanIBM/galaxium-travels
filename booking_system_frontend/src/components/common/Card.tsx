@@ -15,13 +15,13 @@ export const Card = ({ children, className, hover = false, onClick }: CardProps)
   return (
     <Component
       className={clsx(
-        'glass-card p-6',
-        hover && 'hover:bg-white/10 cursor-pointer',
+        'carbon-card p-05',
+        hover && 'hover:bg-carbon-layer-02 cursor-pointer transition-colors duration-150',
         onClick && 'w-full text-left',
         className
       )}
-      whileHover={hover ? { scale: 1.02, y: -4 } : undefined}
-      transition={{ duration: 0.2 }}
+      whileHover={hover ? { scale: 1.01 } : undefined}
+      transition={{ duration: 0.15 }}
       onClick={onClick}
     >
       {children}
@@ -29,4 +29,4 @@ export const Card = ({ children, className, hover = false, onClick }: CardProps)
   );
 };
 
-// Made with Bob
+// Made with Bob - IBM Carbon Design System

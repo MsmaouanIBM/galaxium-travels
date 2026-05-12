@@ -1,11 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply bg-space-dark text-star-white antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    @apply bg-carbon-background text-carbon-text-primary antialiased;
+    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
       sans-serif;
   }
@@ -13,49 +15,126 @@
   * {
     @apply box-border;
   }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-ibm-plex-sans;
+  }
+
+  code, pre {
+    @apply font-ibm-plex-mono;
+  }
 }
 
 @layer components {
-  .glass-card {
-    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-xl;
+  /* Carbon-style card */
+  .carbon-card {
+    @apply bg-carbon-layer-01 border border-carbon-border-subtle rounded-none;
   }
 
+  /* Primary button - Carbon style */
   .btn-primary {
-    @apply bg-cosmic-gradient text-white font-semibold py-3 px-6 rounded-lg 
-           hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all duration-300
-           disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-carbon-interactive text-carbon-text-on-color font-normal py-03 px-05 
+           hover:bg-carbon-interactive-hover transition-colors duration-150
+           focus:outline-none focus:ring-2 focus:ring-carbon-focus focus:ring-offset-2 focus:ring-offset-carbon-background
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-carbon-text-disabled;
   }
 
+  /* Secondary button - Carbon style */
   .btn-secondary {
-    @apply bg-white/10 text-white font-semibold py-3 px-6 rounded-lg 
-           hover:bg-white/20 transition-all duration-300
+    @apply bg-transparent text-carbon-text-primary font-normal py-03 px-05 
+           border border-carbon-interactive
+           hover:bg-carbon-interactive hover:text-carbon-text-on-color transition-colors duration-150
+           focus:outline-none focus:ring-2 focus:ring-carbon-focus focus:ring-offset-2 focus:ring-offset-carbon-background
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:border-carbon-text-disabled;
+  }
+
+  /* Tertiary/Ghost button - Carbon style */
+  .btn-tertiary {
+    @apply bg-transparent text-carbon-interactive font-normal py-03 px-05 
+           hover:bg-carbon-layer-02 transition-colors duration-150
+           focus:outline-none focus:ring-2 focus:ring-carbon-focus focus:ring-offset-2 focus:ring-offset-carbon-background
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:text-carbon-text-disabled;
+  }
+
+  /* Danger button - Carbon style */
+  .btn-danger {
+    @apply bg-carbon-support-error text-carbon-text-on-color font-normal py-03 px-05 
+           hover:bg-red-600 transition-colors duration-150
+           focus:outline-none focus:ring-2 focus:ring-carbon-support-error focus:ring-offset-2 focus:ring-offset-carbon-background
            disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
+  /* Input field - Carbon style */
   .input-field {
-    @apply w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3
-           text-star-white placeholder-gray-400
-           focus:outline-none focus:ring-2 focus:ring-cosmic-purple focus:border-transparent
-           transition-all duration-200;
+    @apply w-full bg-carbon-field-01 border-b-2 border-carbon-border-strong 
+           text-carbon-text-primary placeholder-carbon-text-placeholder
+           px-04 py-03 rounded-none
+           focus:outline-none focus:border-carbon-focus
+           transition-colors duration-150
+           disabled:bg-transparent disabled:border-carbon-text-disabled disabled:text-carbon-text-disabled;
+  }
+
+  /* Label - Carbon style */
+  .label {
+    @apply text-carbon-text-secondary text-sm font-normal mb-02 block;
+  }
+
+  /* Helper text - Carbon style */
+  .helper-text {
+    @apply text-carbon-text-secondary text-xs mt-02;
+  }
+
+  /* Error text - Carbon style */
+  .error-text {
+    @apply text-carbon-support-error text-xs mt-02;
+  }
+
+  /* Link - Carbon style */
+  .carbon-link {
+    @apply text-carbon-link-primary hover:text-carbon-link-secondary underline cursor-pointer;
+  }
+
+  /* Badge - Carbon style */
+  .badge {
+    @apply inline-flex items-center px-02 py-01 text-xs font-medium rounded-none;
+  }
+
+  .badge-info {
+    @apply bg-carbon-support-info/20 text-carbon-support-info border border-carbon-support-info;
+  }
+
+  .badge-success {
+    @apply bg-carbon-support-success/20 text-carbon-support-success border border-carbon-support-success;
+  }
+
+  .badge-warning {
+    @apply bg-carbon-support-warning/20 text-carbon-support-warning border border-carbon-support-warning;
+  }
+
+  .badge-error {
+    @apply bg-carbon-support-error/20 text-carbon-support-error border border-carbon-support-error;
   }
 }
 
-/* Scrollbar styling */
+/* Scrollbar styling - Carbon theme */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0A1929;
+  background: #262626;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #6366F1;
-  border-radius: 5px;
+  background: #525252;
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #EC4899;
+  background: #6f6f6f;
 }
+
+/* Made with Bob - IBM Carbon Design System */
 
 /* Made with Bob */

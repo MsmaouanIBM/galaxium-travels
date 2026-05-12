@@ -45,26 +45,28 @@ export const Modal = ({ isOpen, onClose, title, children, size = 'md' }: ModalPr
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-black/80 z-40"
           />
           
           {/* Modal */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className={`glass-card w-full ${sizeClasses[size]} max-h-[90vh] overflow-y-auto`}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.15 }}
+              className={`bg-carbon-layer-01 border border-carbon-border-subtle w-full ${sizeClasses[size]} max-h-[90vh] overflow-y-auto p-05`}
             >
               {/* Header */}
               {title && (
-                <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-                  <h2 className="text-2xl font-bold text-star-white">{title}</h2>
+                <div className="flex items-center justify-between mb-05 pb-04 border-b border-carbon-border-subtle">
+                  <h2 className="text-xl font-normal text-carbon-text-primary">{title}</h2>
                   <button
                     onClick={onClose}
-                    className="text-star-white/70 hover:text-star-white transition-colors"
+                    className="text-carbon-text-secondary hover:text-carbon-text-primary transition-colors p-02 hover:bg-carbon-layer-02"
+                    aria-label="Close modal"
                   >
-                    <X size={24} />
+                    <X size={20} />
                   </button>
                 </div>
               )}
@@ -79,4 +81,4 @@ export const Modal = ({ isOpen, onClose, title, children, size = 'md' }: ModalPr
   );
 };
 
-// Made with Bob
+// Made with Bob - IBM Carbon Design System

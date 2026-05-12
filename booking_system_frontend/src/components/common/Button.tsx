@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 interface ButtonProps {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   onClick?: () => void;
@@ -22,24 +22,25 @@ export const Button = ({
   type = 'button',
   onClick,
 }: ButtonProps) => {
-  const baseClasses = 'font-semibold rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2';
+  const baseClasses = 'font-normal transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-carbon-focus focus:ring-offset-2 focus:ring-offset-carbon-background';
   
   const variantClasses = {
-    primary: 'bg-cosmic-gradient text-white hover:shadow-lg hover:shadow-cosmic-purple/50',
-    secondary: 'bg-white/10 text-white hover:bg-white/20',
-    danger: 'bg-red-600 text-white hover:bg-red-700 hover:shadow-lg hover:shadow-red-500/50',
+    primary: 'bg-carbon-interactive text-carbon-text-on-color hover:bg-carbon-interactive-hover',
+    secondary: 'bg-transparent text-carbon-text-primary border border-carbon-interactive hover:bg-carbon-interactive hover:text-carbon-text-on-color',
+    tertiary: 'bg-transparent text-carbon-interactive hover:bg-carbon-layer-02',
+    danger: 'bg-carbon-support-error text-carbon-text-on-color hover:bg-red-600',
   };
   
   const sizeClasses = {
-    sm: 'py-2 px-4 text-sm',
-    md: 'py-3 px-6 text-base',
-    lg: 'py-4 px-8 text-lg',
+    sm: 'py-02 px-04 text-sm',
+    md: 'py-03 px-05 text-base',
+    lg: 'py-04 px-06 text-lg',
   };
 
   return (
     <motion.button
-      whileHover={{ scale: disabled || isLoading ? 1 : 1.02 }}
-      whileTap={{ scale: disabled || isLoading ? 1 : 0.98 }}
+      whileHover={{ scale: disabled || isLoading ? 1 : 1.01 }}
+      whileTap={{ scale: disabled || isLoading ? 1 : 0.99 }}
       className={clsx(
         baseClasses,
         variantClasses[variant],
@@ -81,4 +82,4 @@ export const Button = ({
   );
 };
 
-// Made with Bob
+// Made with Bob - IBM Carbon Design System

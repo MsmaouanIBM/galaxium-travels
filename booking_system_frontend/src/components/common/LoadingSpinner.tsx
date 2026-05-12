@@ -13,17 +13,17 @@ export const LoadingSpinner = ({ size = 'md', text }: LoadingSpinnerProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-8">
+    <div className="flex flex-col items-center justify-center gap-04 py-08">
       <motion.div
-        className={`${sizeClasses[size]} border-4 border-cosmic-purple border-t-transparent rounded-full`}
+        className={`${sizeClasses[size]} border-4 border-carbon-interactive border-t-transparent rounded-full`}
         animate={{ rotate: 360 }}
         transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
       />
       {text && (
-        <p className="text-star-white/70 text-sm">{text}</p>
+        <p className="text-carbon-text-secondary text-sm">{text}</p>
       )}
     </div>
   );
 };
 
-// Made with Bob
+// Made with Bob - IBM Carbon Design System

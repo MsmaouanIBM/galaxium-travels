@@ -15,26 +15,26 @@ export const BookingCard = ({ booking, flight, onCancel, isCancelling }: Booking
   const getStatusIcon = () => {
     switch (booking.status) {
       case 'booked':
-        return <CheckCircle className="text-alien-green" size={20} />;
+        return <CheckCircle className="text-carbon-support-success" size={20} />;
       case 'cancelled':
-        return <XCircle className="text-red-500" size={20} />;
+        return <XCircle className="text-carbon-support-error" size={20} />;
       case 'completed':
-        return <CheckCircle className="text-blue-500" size={20} />;
+        return <CheckCircle className="text-carbon-support-info" size={20} />;
       default:
-        return <Clock className="text-star-white/50" size={20} />;
+        return <Clock className="text-carbon-text-secondary" size={20} />;
     }
   };
 
   const getStatusColor = () => {
     switch (booking.status) {
       case 'booked':
-        return 'text-alien-green';
+        return 'text-carbon-support-success';
       case 'cancelled':
-        return 'text-red-500';
+        return 'text-carbon-support-error';
       case 'completed':
-        return 'text-blue-500';
+        return 'text-carbon-support-info';
       default:
-        return 'text-star-white/50';
+        return 'text-carbon-text-secondary';
     }
   };
 
@@ -49,16 +49,16 @@ export const BookingCard = ({ booking, flight, onCancel, isCancelling }: Booking
     >
       <Card>
         {/* Header */}
-        <div className="flex items-start justify-between mb-4 pb-4 border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-cosmic-gradient">
-              <Plane className="text-white" size={20} />
+        <div className="flex items-start justify-between mb-04 pb-04 border-b border-carbon-border-subtle">
+          <div className="flex items-center gap-03">
+            <div className="p-02 bg-carbon-interactive">
+              <Plane className="text-carbon-text-on-color" size={20} />
             </div>
             <div>
-              <p className="text-sm text-star-white/60">Booking #{booking.booking_id}</p>
-              <div className="flex items-center gap-2 mt-1">
+              <p className="text-sm text-carbon-text-secondary">Booking #{booking.booking_id}</p>
+              <div className="flex items-center gap-02 mt-01">
                 {getStatusIcon()}
-                <span className={`text-sm font-semibold capitalize ${getStatusColor()}`}>
+                <span className={`text-sm font-normal capitalize ${getStatusColor()}`}>
                   {booking.status}
                 </span>
               </div>
@@ -67,61 +67,61 @@ export const BookingCard = ({ booking, flight, onCancel, isCancelling }: Booking
           
           {/* Cancelled Badge */}
           {booking.status === 'cancelled' && (
-            <div className="flex items-center gap-1 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30">
-              <Ban size={14} className="text-red-400" />
-              <span className="text-xs font-semibold text-red-400">Cancelled</span>
+            <div className="badge badge-error">
+              <Ban size={14} />
+              <span>Cancelled</span>
             </div>
           )}
         </div>
 
         {/* Flight Details */}
         {flight ? (
-          <div className="space-y-3 mb-4">
+          <div className="space-y-03 mb-04">
             <div>
-              <h3 className="text-xl font-bold text-star-white mb-1">
+              <h3 className="text-xl font-normal text-carbon-text-primary mb-01">
                 {flight.origin} → {flight.destination}
               </h3>
-              <p className="text-sm text-star-white/60">Flight #{flight.flight_id}</p>
+              <p className="text-sm text-carbon-text-secondary">Flight #{flight.flight_id}</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-04">
               <div>
-                <p className="text-xs text-star-white/60 mb-1">Departure</p>
-                <p className="text-sm text-star-white font-medium">
+                <p className="text-xs text-carbon-text-secondary mb-01">Departure</p>
+                <p className="text-sm text-carbon-text-primary font-normal">
                   {formatDate(flight.departure_time)}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-star-white/60 mb-1">Arrival</p>
-                <p className="text-sm text-star-white font-medium">
+                <p className="text-xs text-carbon-text-secondary mb-01">Arrival</p>
+                <p className="text-sm text-carbon-text-primary font-normal">
                   {formatDate(flight.arrival_time)}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-3 border-t border-white/10">
-              <span className="text-sm text-star-white/60">Price</span>
-              <span className="text-lg font-bold text-star-white">
+            <div className="flex items-center justify-between pt-03 border-t border-carbon-border-subtle">
+              <span className="text-sm text-carbon-text-secondary">Price</span>
+              <span className="text-lg font-normal text-carbon-text-primary">
                 {formatCurrency(flight.price)}
               </span>
             </div>
           </div>
         ) : (
-          <div className="mb-4">
-            <p className="text-sm text-star-white/60">Flight ID: {booking.flight_id}</p>
+          <div className="mb-04">
+            <p className="text-sm text-carbon-text-secondary">Flight ID: {booking.flight_id}</p>
           </div>
         )}
 
         {/* Booking Time */}
-        <div className="space-y-2 mb-4">
-          <div className="flex items-center gap-2 text-sm text-star-white/60">
+        <div className="space-y-02 mb-04">
+          <div className="flex items-center gap-02 text-sm text-carbon-text-secondary">
             <Calendar size={16} />
             <span>Booked on {formatDate(booking.booking_time)}</span>
           </div>
           
           {/* Cancelled Time */}
           {booking.cancelled_at && (
-            <div className="flex items-center gap-2 text-sm text-red-400/80">
+            <div className="flex items-center gap-02 text-sm text-carbon-support-error">
               <Ban size={16} />
               <span>Cancelled on {formatDate(booking.cancelled_at)}</span>
             </div>
@@ -145,4 +145,4 @@ export const BookingCard = ({ booking, flight, onCancel, isCancelling }: Booking
   );
 };
 
-// Made with Bob
+// Made with Bob - IBM Carbon Design System

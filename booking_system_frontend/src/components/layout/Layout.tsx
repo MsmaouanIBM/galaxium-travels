@@ -10,31 +10,30 @@ interface LayoutProps {
 
 export const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="min-h-screen flex flex-col relative">
-      {/* Animated starfield background */}
+    <div className="min-h-screen flex flex-col relative bg-carbon-background">
+      {/* Animated starfield background - keeping for visual interest */}
       <Starfield />
       
-      {/* Toast notifications */}
+      {/* Toast notifications - Carbon themed */}
       <Toaster
         position="top-right"
         toastOptions={{
           duration: 4000,
           style: {
-            background: 'rgba(10, 25, 41, 0.95)',
-            color: '#F9FAFB',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(10px)',
+            background: '#262626',
+            color: '#f4f4f4',
+            border: '1px solid #393939',
           },
           success: {
             iconTheme: {
-              primary: '#10B981',
-              secondary: '#F9FAFB',
+              primary: '#42be65',
+              secondary: '#f4f4f4',
             },
           },
           error: {
             iconTheme: {
-              primary: '#EF4444',
-              secondary: '#F9FAFB',
+              primary: '#ff8389',
+              secondary: '#f4f4f4',
             },
           },
         }}
@@ -56,4 +55,4 @@ export const Layout = ({ children }: LayoutProps) => {
   );
 };
 
-// Made with Bob
+// Made with Bob - IBM Carbon Design System
