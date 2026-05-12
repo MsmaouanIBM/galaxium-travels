@@ -25,6 +25,23 @@ export const formatDate = (
       parseInt(minutes)
     ));
     
+    // Use UTC methods to format the date to avoid timezone conversion
+    // date-fns format() uses local time, so we need to format manually for UTC
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthName = months[date.getUTCMonth()];
+    const dayNum = date.getUTCDate().toString().padStart(2, '0');
+    const yearNum = date.getUTCFullYear();
+    const hoursNum = date.getUTCHours().toString().padStart(2, '0');
+    const minutesNum = date.getUTCMinutes().toString().padStart(2, '0');
+    
+    // Handle different format strings
+    if (formatString === 'MMM dd, yyyy') {
+      return `${monthName} ${dayNum}, ${yearNum}`;
+    } else if (formatString === 'MMM dd, yyyy HH:mm') {
+      return `${monthName} ${dayNum}, ${yearNum} ${hoursNum}:${minutesNum}`;
+    }
+    
+    // Fallback to date-fns format for other formats
     return format(date, formatString);
   } catch (error) {
     console.error('Error formatting date:', error);
