@@ -44,37 +44,30 @@ export const Header = () => {
             >
               Flights
             </Link>
-            {user && (
-              <Link
-                to="/bookings"
-                className={`text-sm transition-colors ${
-                  isActive('/bookings')
-                    ? 'text-white'
-                    : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                My Bookings
-              </Link>
-            )}
+            <Link
+              to="/bookings"
+              className={`text-sm transition-colors ${
+                isActive('/bookings')
+                  ? 'text-white'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              My Bookings
+            </Link>
           </nav>
 
           {/* User Section */}
           <div className="flex items-center gap-4">
-            {user && (
-              <>
-                <div className="flex items-center gap-2 text-sm text-gray-300">
-                  <User size={16} className="text-purple-400" />
-                  <span>User: Siddhartha Sood</span>
-                </div>
-                <button
-                  onClick={logout}
-                  className="flex items-center gap-2 px-3 py-1.5 text-sm text-white bg-gray-800 hover:bg-gray-700 rounded transition-colors"
-                >
-                  <LogOut size={14} />
-                  <span>Logout</span>
-                </button>
-              </>
-            )}
+            <span className="text-sm text-gray-300">
+              Siddhartha Sood
+            </span>
+            <button
+              onClick={logout}
+              className="flex items-center gap-2 px-3 py-1.5 text-sm text-white bg-gray-800 hover:bg-gray-700 rounded transition-colors"
+            >
+              <LogOut size={14} />
+              <span>Logout</span>
+            </button>
           </div>
         </div>
 
