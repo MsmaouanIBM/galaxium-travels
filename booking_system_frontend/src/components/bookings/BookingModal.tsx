@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import type { Flight } from '../../types';
 import { Modal, Button, Input } from '../common';
-import { Plane, Calendar, Clock, DollarSign, Users, Baby } from 'lucide-react';
+import { Plane, Calendar, Clock, DollarSign, Users, Baby, AlertTriangle } from 'lucide-react';
 import { formatCurrency, formatDate, calculateDuration } from '../../utils/formatters';
 import { bookFlight, isErrorResponse } from '../../services/api';
 import { useUser } from '../../hooks/useUser';
@@ -25,9 +25,21 @@ export const BookingModal = ({ isOpen, onClose, flight, onSuccess }: BookingModa
   const maxInfants = numAdults * 2;
   const totalPrice = flight.price * numAdults;
 
+  // Check if flight has already departed
+  const hasFlightDeparted = useMemo(() => {
+    const now = new Date();
+    const departureTime = new Date(flight.departure_time);
+    return now > departureTime;
+  }, [flight.departure_time]);
+
   const handleConfirmBooking = async () => {
     if (!user) {
       toast.error('Please sign in to book a flight');
+      return;
+    }
+
+    if (hasFlightDeparted) {
+      toast.error('This flight has already departed and cannot be booked');
       return;
     }
 
@@ -75,6 +87,23 @@ export const BookingModal = ({ isOpen, onClose, flight, onSuccess }: BookingModa
       size="md"
     >
       <div className="space-y-6">
+        {/* Departed Flight Warning */}
+        {hasFlightDeparted && (
+          <div className="glass-card p-4 bg-red-500/10 border border-red-500/30">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="text-red-400 mt-0.5 flex-shrink-0" size={20} />
+              <div>
+                <h4 className="text-red-400 font-semibold mb-1">
+                  Flight Already Departed
+                </h4>
+                <p className="text-red-300/80 text-sm">
+                  This flight has already departed and cannot be booked.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Flight Summary */}
         <div className="glass-card p-4 bg-white/5">
           <div className="flex items-center gap-3 mb-4">
@@ -217,6 +246,7 @@ export const BookingModal = ({ isOpen, onClose, flight, onSuccess }: BookingModa
           <Button
             onClick={handleConfirmBooking}
             isLoading={isLoading}
+            disabled={hasFlightDeparted}
             className="flex-1"
           >
             Confirm Booking

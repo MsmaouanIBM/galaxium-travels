@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastmcp import FastMCP
 from sqlalchemy.orm import Session
@@ -152,7 +152,10 @@ def book_flight_endpoint(request: BookingRequest, db: Session = Depends(get_db))
     Optional: num_adults (default 1) and num_infants (default 0, max 2 per adult).
     Infants do not require separate seats. Decrements available seats by num_adults if successful.
     """
-    return booking.book_flight(db, request.user_id, request.name, request.flight_id, request.num_adults, request.num_infants)
+    result = booking.book_flight(db, request.user_id, request.name, request.flight_id, request.num_adults, request.num_infants)
+    if isinstance(result, ErrorResponse):
+        raise HTTPException(status_code=400, detail=result.model_dump())
+    return result
 
 
 @app.get("/bookings/{user_id}", response_model=list[BookingOut], tags=["Bookings"])

@@ -22,6 +22,16 @@ def book_flight(db: Session, user_id: int, name: str, flight_id: int, num_adults
             details=f"The specified flight_id {flight_id} does not exist in our system. Please check the flight_id or use list_flights to see available flights."
         )
 
+    # Check if flight has already departed
+    now = datetime.utcnow()
+    departure_time = datetime.fromisoformat(flight.departure_time.replace('Z', '+00:00'))
+    if now > departure_time:
+        return ErrorResponse(
+            error="Cannot book a flight that has already departed",
+            error_code="FLIGHT_DEPARTED",
+            details=f"The flight departed at {flight.departure_time}. Current time is {now.isoformat()}Z. You cannot book flights that have already left."
+        )
+
     # Check seats available (only adults need seats, infants sit on laps)
     if flight.seats_available < num_adults:
         return ErrorResponse(

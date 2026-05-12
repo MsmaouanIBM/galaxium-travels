@@ -1,6 +1,6 @@
 import type { Flight } from '../../types';
 import { Card, Button } from '../common';
-import { Plane, Clock, DollarSign, Users } from 'lucide-react';
+import { Plane, Clock, DollarSign, Users, AlertCircle } from 'lucide-react';
 import { formatCurrency, formatDate, formatTime, calculateDuration } from '../../utils/formatters';
 import { motion } from 'framer-motion';
 
@@ -12,6 +12,9 @@ interface FlightCardProps {
 export const FlightCard = ({ flight, onBook }: FlightCardProps) => {
   const isLowSeats = flight.seats_available <= 2;
   const isSoldOut = flight.seats_available === 0;
+  
+  // Check if flight has already departed
+  const hasDeparted = new Date() > new Date(flight.departure_time);
 
   return (
     <motion.div
@@ -24,11 +27,11 @@ export const FlightCard = ({ flight, onBook }: FlightCardProps) => {
         {/* Route Header */}
         <div className="flex items-center justify-between mb-04 pb-04 border-b border-carbon-border-subtle">
           <div className="flex items-center gap-03">
-            <div className="p-02 bg-carbon-interactive">
+            <div className={`p-02 ${hasDeparted ? 'bg-carbon-text-disabled' : 'bg-carbon-interactive'}`}>
               <Plane className="text-carbon-text-on-color" size={24} />
             </div>
             <div>
-              <h3 className="text-xl font-normal text-carbon-text-primary">
+              <h3 className={`text-xl font-normal ${hasDeparted ? 'text-carbon-text-disabled' : 'text-carbon-text-primary'}`}>
                 {flight.origin} → {flight.destination}
               </h3>
               <p className="text-sm text-carbon-text-secondary">
@@ -36,6 +39,12 @@ export const FlightCard = ({ flight, onBook }: FlightCardProps) => {
               </p>
             </div>
           </div>
+          {hasDeparted && (
+            <div className="flex items-center gap-01 px-02 py-01 bg-carbon-support-error/10 border border-carbon-support-error rounded">
+              <AlertCircle size={14} className="text-carbon-support-error" />
+              <span className="text-xs font-medium text-carbon-support-error">Departed</span>
+            </div>
+          )}
         </div>
 
         {/* Flight Details */}
@@ -91,10 +100,10 @@ export const FlightCard = ({ flight, onBook }: FlightCardProps) => {
         {/* Book Button */}
         <Button
           onClick={() => onBook(flight)}
-          disabled={isSoldOut}
+          disabled={isSoldOut || hasDeparted}
           className="w-full"
         >
-          {isSoldOut ? 'Sold Out' : 'Book Now'}
+          {hasDeparted ? 'Departed' : isSoldOut ? 'Sold Out' : 'Book Now'}
         </Button>
       </Card>
     </motion.div>

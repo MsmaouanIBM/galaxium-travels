@@ -1,6 +1,7 @@
 import pytest
 import sys
 from pathlib import Path
+from datetime import datetime, timedelta
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -265,3 +266,50 @@ class TestBookingService:
         """Test getting bookings when user has none."""
         result = booking.get_bookings(db_session, 999)
         assert result == []
+
+    def test_book_flight_already_departed(self, db_session):
+        """Test booking a flight that has already departed."""
+        # Create user and flight with past departure time
+        db_session.add(User(name="Test User", email="test@example.com"))
+        past_time = (datetime.utcnow() - timedelta(hours=2)).isoformat() + "Z"
+        db_session.add(Flight(
+            origin="Earth",
+            destination="Mars",
+            departure_time=past_time,
+            arrival_time=(datetime.utcnow() - timedelta(hours=1)).isoformat() + "Z",
+            price=1000000,
+            seats_available=5
+        ))
+        db_session.commit()
+
+        user_obj = db_session.query(User).first()
+        flight_obj = db_session.query(Flight).first()
+
+        result = booking.book_flight(db_session, user_obj.user_id, "Test User", flight_obj.flight_id)
+        assert isinstance(result, ErrorResponse)
+        assert result.error_code == "FLIGHT_DEPARTED"
+        assert "already departed" in result.error.lower()
+
+    def test_book_flight_future_departure(self, db_session):
+        """Test booking a flight with future departure time (should succeed)."""
+        # Create user and flight with future departure time
+        db_session.add(User(name="Test User", email="test@example.com"))
+        future_time = (datetime.utcnow() + timedelta(days=30)).isoformat() + "Z"
+        db_session.add(Flight(
+            origin="Earth",
+            destination="Mars",
+            departure_time=future_time,
+            arrival_time=(datetime.utcnow() + timedelta(days=30, hours=8)).isoformat() + "Z",
+            price=1000000,
+            seats_available=5
+        ))
+        db_session.commit()
+
+        user_obj = db_session.query(User).first()
+        flight_obj = db_session.query(Flight).first()
+
+        result = booking.book_flight(db_session, user_obj.user_id, "Test User", flight_obj.flight_id)
+        assert not isinstance(result, ErrorResponse)
+        assert result.status == "booked"
+        assert result.user_id == user_obj.user_id
+        assert result.flight_id == flight_obj.flight_id
