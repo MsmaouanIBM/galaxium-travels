@@ -26,14 +26,14 @@ def seed():
     ]
     db.add_all(users)
     db.commit()
-    # Add demo flights with updated times to match screenshot
+    # Add demo flights with exact times and prices to match screenshot
     flights = [
         Flight(origin="Earth", destination="Mars", departure_time="2099-01-01T14:30:00Z", arrival_time="2099-01-01T22:30:00Z", price=1000000, seats_available=17),
-        Flight(origin="Earth", destination="Moon", departure_time="2099-01-02T08:00:00Z", arrival_time="2099-01-02T12:00:00Z", price=500000, seats_available=17),
-        Flight(origin="Mars", destination="Earth", departure_time="2099-01-03T16:00:00Z", arrival_time="2099-01-04T00:00:00Z", price=950000, seats_available=17),
-        Flight(origin="Venus", destination="Earth", departure_time="2099-01-04T10:30:00Z", arrival_time="2099-01-04T20:30:00Z", price=1200000, seats_available=17),
-        Flight(origin="Jupiter", destination="Europa", departure_time="2099-01-05T18:00:00Z", arrival_time="2099-01-05T22:00:00Z", price=2000000, seats_available=17),
-        Flight(origin="Earth", destination="Venus", departure_time="2099-01-06T09:15:00Z", arrival_time="2099-01-06T17:15:00Z", price=1100000, seats_available=17),
+        Flight(origin="Earth", destination="Moon", departure_time="2099-01-02T15:30:00Z", arrival_time="2099-01-02T19:30:00Z", price=500000, seats_available=17),
+        Flight(origin="Mars", destination="Earth", departure_time="2099-01-03T17:30:00Z", arrival_time="2099-01-04T01:30:00Z", price=950000, seats_available=17),
+        Flight(origin="Venus", destination="Earth", departure_time="2099-01-04T13:30:00Z", arrival_time="2099-01-04T23:30:00Z", price=1200000, seats_available=17),
+        Flight(origin="Jupiter", destination="Europa", departure_time="2099-01-05T20:30:00Z", arrival_time="2099-01-06T00:30:00Z", price=2000000, seats_available=17),
+        Flight(origin="Earth", destination="Venus", departure_time="2099-01-06T12:30:00Z", arrival_time="2099-01-06T20:30:00Z", price=1100000, seats_available=17),
         Flight(origin="Moon", destination="Mars", departure_time="2099-01-07T13:45:00Z", arrival_time="2099-01-07T21:45:00Z", price=800000, seats_available=17),
         Flight(origin="Mars", destination="Jupiter", departure_time="2099-01-08T15:30:00Z", arrival_time="2099-01-09T01:30:00Z", price=2500000, seats_available=17),
         Flight(origin="Europa", destination="Earth", departure_time="2099-01-09T11:00:00Z", arrival_time="2099-01-09T23:00:00Z", price=3000000, seats_available=17),

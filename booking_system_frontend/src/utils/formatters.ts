@@ -27,9 +27,21 @@ export const formatDateShort = (dateString: string): string => {
 
 /**
  * Format time only (e.g., "09:00")
+ * Extracts time directly from ISO string without timezone conversion
  */
 export const formatTime = (dateString: string): string => {
-  return formatDate(dateString, 'HH:mm');
+  try {
+    // Extract time directly from ISO string (format: YYYY-MM-DDTHH:mm:ssZ)
+    const timePart = dateString.split('T')[1];
+    if (timePart) {
+      const [hours, minutes] = timePart.split(':');
+      return `${hours}:${minutes}`;
+    }
+    return dateString;
+  } catch (error) {
+    console.error('Error formatting time:', error);
+    return dateString;
+  }
 };
 
 /**

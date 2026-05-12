@@ -65,11 +65,11 @@ export const Header = () => {
 
           {/* User Section */}
           <div className="flex items-center gap-03">
-            {user ? (
+            {user && (
               <div className="flex items-center gap-03">
                 <div className="hidden md:flex items-center gap-02 text-sm px-03 py-02 bg-carbon-layer-01">
                   <User size={16} className="text-carbon-interactive" />
-                  <span className="text-carbon-text-primary">{user.name}</span>
+                  <span className="text-carbon-text-primary">Siddhartha Sood</span>
                 </div>
                 <Button
                   variant="tertiary"
@@ -81,10 +81,6 @@ export const Header = () => {
                   <span className="hidden md:inline">Logout</span>
                 </Button>
               </div>
-            ) : (
-              <Link to="/flights">
-                <Button size="sm">Book a Flight</Button>
-              </Link>
             )}
           </div>
         </div>

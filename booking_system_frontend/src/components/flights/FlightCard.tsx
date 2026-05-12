@@ -21,10 +21,9 @@ export const FlightCard = ({ flight, onBook }: FlightCardProps) => {
   const galaxiumSeats = 2;
   const totalSeats = economySeats + businessSeats + galaxiumSeats;
 
-  // Price range (showing starting from economy price)
+  // Price range (showing starting from economy price to galaxium price)
   const economyPrice = flight.price;
-  const businessPrice = Math.round(flight.price * 1.5);
-  const galaxiumPrice = Math.round(flight.price * 2.5);
+  const galaxiumPrice = Math.round(flight.price * 4);
 
   return (
     <motion.div
@@ -33,9 +32,9 @@ export const FlightCard = ({ flight, onBook }: FlightCardProps) => {
       whileHover={{ y: -2 }}
       transition={{ duration: 0.2 }}
     >
-      <div className="bg-[#0f1729] border border-purple-500/20 rounded-lg p-6 h-full flex flex-col shadow-lg hover:shadow-purple-500/20 transition-shadow">
+      <div className="bg-[#0f1729] border border-purple-500/20 rounded-lg p-5 h-full flex flex-col shadow-lg hover:shadow-purple-500/20 transition-shadow">
         {/* Route Header */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg">
               <Plane className="text-white" size={24} />
@@ -52,7 +51,7 @@ export const FlightCard = ({ flight, onBook }: FlightCardProps) => {
         </div>
 
         {/* Flight Details */}
-        <div className="space-y-4 mb-5 flex-1">
+        <div className="space-y-3 mb-4 flex-1">
           {/* Departure & Arrival */}
           <div className="grid grid-cols-2 gap-4">
             <div>
