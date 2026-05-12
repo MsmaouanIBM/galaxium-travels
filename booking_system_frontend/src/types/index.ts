@@ -18,6 +18,9 @@ export interface Booking {
   booking_time: string;
   num_adults: number;
   num_infants: number;
+  cancelled_at?: string | null;
+  refund_status?: string;
+  refunded_amount?: number;
 }
 
 export interface User {

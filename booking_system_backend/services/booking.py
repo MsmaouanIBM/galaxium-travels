@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from datetime import datetime
+from datetime import datetime, timedelta
 from models import User, Flight, Booking
-from schemas import BookingOut, ErrorResponse
+from schemas import BookingOut, ErrorResponse, CancellationResponse
 
 
 def book_flight(db: Session, user_id: int, name: str, flight_id: int, num_adults: int = 1, num_infants: int = 0) -> BookingOut | ErrorResponse:
@@ -63,8 +63,8 @@ def book_flight(db: Session, user_id: int, name: str, flight_id: int, num_adults
     return BookingOut.model_validate(new_booking)
 
 
-def cancel_booking(db: Session, booking_id: int) -> BookingOut | ErrorResponse:
-    """Cancel an existing booking by its booking_id."""
+def cancel_booking(db: Session, booking_id: int) -> CancellationResponse | ErrorResponse:
+    """Cancel an existing booking by its booking_id with refund calculation."""
     booking = db.query(Booking).filter(Booking.booking_id == booking_id).first()
     if not booking:
         return ErrorResponse(
@@ -80,16 +80,48 @@ def cancel_booking(db: Session, booking_id: int) -> BookingOut | ErrorResponse:
             details=f"Booking {booking_id} is already cancelled and cannot be cancelled again. The booking status is currently '{booking.status}'. If you need to make changes, please contact support."
         )
 
-    # Restore seats (restore number of adults, infants don't use seats)
+    # Get flight details for refund calculation
     flight = db.query(Flight).filter(Flight.flight_id == booking.flight_id).first()
-    if flight:
-        num_adults_to_restore = getattr(booking, 'num_adults', 1)  # Default to 1 for backward compatibility
-        flight.seats_available += num_adults_to_restore
+    if not flight:
+        return ErrorResponse(
+            error="Flight not found",
+            error_code="FLIGHT_NOT_FOUND",
+            details=f"Associated flight not found for booking {booking_id}."
+        )
 
+    # Calculate refund based on 24-hour rule
+    now = datetime.utcnow()
+    departure_time = datetime.fromisoformat(flight.departure_time.replace('Z', '+00:00'))
+    hours_until_departure = (departure_time - now).total_seconds() / 3600
+    
+    num_adults = getattr(booking, 'num_adults', 1)
+    total_price = flight.price * num_adults
+    
+    if hours_until_departure > 24:
+        refund_status = "FULL_REFUND"
+        refunded_amount = float(total_price)
+    else:
+        refund_status = "NO_REFUND"
+        refunded_amount = 0.0
+
+    # Restore seats (restore number of adults, infants don't use seats)
+    flight.seats_available += num_adults
+
+    # Update booking status and set cancelled_at timestamp
     booking.status = "cancelled"
+    booking.cancelled_at = now
+    
     db.commit()
     db.refresh(booking)
-    return BookingOut.model_validate(booking)
+    
+    # Return cancellation response with refund details
+    return CancellationResponse(
+        booking_id=booking.booking_id,
+        status=booking.status,
+        refund_status=refund_status,
+        refunded_amount=refunded_amount,
+        cancelled_at=booking.cancelled_at.isoformat()
+    )
 
 
 def get_bookings(db: Session, user_id: int) -> list[BookingOut]:

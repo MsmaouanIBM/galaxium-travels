@@ -65,7 +65,16 @@ export const MyBookings = () => {
         return;
       }
 
-      toast.success('Booking cancelled successfully');
+      // Show refund status in toast
+      const refundStatus = result.refund_status;
+      const refundAmount = result.refunded_amount;
+      
+      if (refundStatus === 'FULL_REFUND' && refundAmount) {
+        toast.success(`Booking cancelled successfully! Full refund of $${refundAmount.toFixed(2)} will be processed.`);
+      } else {
+        toast.success('Booking cancelled successfully. No refund available (less than 24 hours before departure).');
+      }
+      
       loadData(); // Reload bookings
     } catch (error: any) {
       toast.error(error.details || error.error || 'Failed to cancel booking');
@@ -77,6 +86,33 @@ export const MyBookings = () => {
 
   const getFlightForBooking = (booking: Booking): Flight | undefined => {
     return flights.find((f) => f.flight_id === booking.flight_id);
+  };
+
+  const getRefundInfo = (booking: Booking): { eligible: boolean; amount: number; message: string } => {
+    const flight = getFlightForBooking(booking);
+    if (!flight) {
+      return { eligible: false, amount: 0, message: 'Flight information unavailable' };
+    }
+
+    const now = new Date();
+    const departureTime = new Date(flight.departure_time);
+    const hoursUntilDeparture = (departureTime.getTime() - now.getTime()) / (1000 * 60 * 60);
+    
+    const totalPrice = flight.price * booking.num_adults;
+    
+    if (hoursUntilDeparture > 24) {
+      return {
+        eligible: true,
+        amount: totalPrice,
+        message: `You will receive a full refund of $${totalPrice.toFixed(2)}`
+      };
+    } else {
+      return {
+        eligible: false,
+        amount: 0,
+        message: 'No refund available (less than 24 hours before departure)'
+      };
+    }
   };
 
   const activeBookings = bookings.filter((b) => b.status === 'booked');
@@ -183,6 +219,22 @@ export const MyBookings = () => {
           <p className="text-star-white/70">
             Are you sure you want to cancel this booking? This action cannot be undone.
           </p>
+          
+          {/* Refund Information */}
+          {bookingToCancel && (() => {
+            const booking = bookings.find(b => b.booking_id === bookingToCancel);
+            if (!booking) return null;
+            
+            const refundInfo = getRefundInfo(booking);
+            return (
+              <div className={`p-4 rounded-lg ${refundInfo.eligible ? 'bg-green-500/10 border border-green-500/30' : 'bg-red-500/10 border border-red-500/30'}`}>
+                <p className={`text-sm font-medium ${refundInfo.eligible ? 'text-green-400' : 'text-red-400'}`}>
+                  {refundInfo.message}
+                </p>
+              </div>
+            );
+          })()}
+          
           <div className="flex gap-3">
             <Button
               variant="secondary"

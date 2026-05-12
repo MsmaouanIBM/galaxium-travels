@@ -1,6 +1,6 @@
 import type { Booking, Flight } from '../../types';
 import { Card, Button } from '../common';
-import { Plane, Calendar, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Plane, Calendar, CheckCircle, XCircle, Clock, Ban } from 'lucide-react';
 import { formatDate, formatCurrency } from '../../utils/formatters';
 import { motion } from 'framer-motion';
 
@@ -64,6 +64,14 @@ export const BookingCard = ({ booking, flight, onCancel, isCancelling }: Booking
               </div>
             </div>
           </div>
+          
+          {/* Cancelled Badge */}
+          {booking.status === 'cancelled' && (
+            <div className="flex items-center gap-1 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30">
+              <Ban size={14} className="text-red-400" />
+              <span className="text-xs font-semibold text-red-400">Cancelled</span>
+            </div>
+          )}
         </div>
 
         {/* Flight Details */}
@@ -105,9 +113,19 @@ export const BookingCard = ({ booking, flight, onCancel, isCancelling }: Booking
         )}
 
         {/* Booking Time */}
-        <div className="flex items-center gap-2 text-sm text-star-white/60 mb-4">
-          <Calendar size={16} />
-          <span>Booked on {formatDate(booking.booking_time)}</span>
+        <div className="space-y-2 mb-4">
+          <div className="flex items-center gap-2 text-sm text-star-white/60">
+            <Calendar size={16} />
+            <span>Booked on {formatDate(booking.booking_time)}</span>
+          </div>
+          
+          {/* Cancelled Time */}
+          {booking.cancelled_at && (
+            <div className="flex items-center gap-2 text-sm text-red-400/80">
+              <Ban size={16} />
+              <span>Cancelled on {formatDate(booking.cancelled_at)}</span>
+            </div>
+          )}
         </div>
 
         {/* Cancel Button */}

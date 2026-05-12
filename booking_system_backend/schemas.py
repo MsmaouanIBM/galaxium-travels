@@ -40,6 +40,18 @@ class BookingOut(BaseModel):
     booking_time: str
     num_adults: int = 1
     num_infants: int = 0
+    cancelled_at: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class CancellationResponse(BaseModel):
+    booking_id: int
+    status: str
+    refund_status: str
+    refunded_amount: float
+    cancelled_at: str
 
     class Config:
         from_attributes = True

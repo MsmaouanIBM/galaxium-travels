@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -28,3 +28,4 @@ class Booking(Base):
     booking_time = Column(String, nullable=False)
     num_adults = Column(Integer, nullable=False, default=1)
     num_infants = Column(Integer, nullable=False, default=0)
+    cancelled_at = Column(DateTime, nullable=True, default=None)
