@@ -2,6 +2,7 @@ import { format, parseISO } from 'date-fns';
 
 /**
  * Format a date string to a readable format
+ * Extracts date directly from ISO string without timezone conversion
  * @param dateString ISO date string
  * @param formatString date-fns format string (default: 'MMM dd, yyyy HH:mm')
  */
@@ -10,7 +11,20 @@ export const formatDate = (
   formatString: string = 'MMM dd, yyyy HH:mm'
 ): string => {
   try {
-    const date = parseISO(dateString);
+    // Extract date parts directly from ISO string (format: YYYY-MM-DDTHH:mm:ssZ)
+    const [datePart, timePart] = dateString.split('T');
+    const [year, month, day] = datePart.split('-');
+    const [hours, minutes] = timePart ? timePart.split(':') : ['00', '00'];
+    
+    // Create a date object in UTC to avoid timezone conversion
+    const date = new Date(Date.UTC(
+      parseInt(year),
+      parseInt(month) - 1, // months are 0-indexed
+      parseInt(day),
+      parseInt(hours),
+      parseInt(minutes)
+    ));
+    
     return format(date, formatString);
   } catch (error) {
     console.error('Error formatting date:', error);
