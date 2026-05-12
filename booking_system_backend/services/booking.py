@@ -4,8 +4,15 @@ from models import User, Flight, Booking
 from schemas import BookingOut, ErrorResponse
 
 
-def book_flight(db: Session, user_id: int, name: str, flight_id: int) -> BookingOut | ErrorResponse:
-    """Book a seat on a specific flight for a user."""
+def book_flight(db: Session, user_id: int, name: str, flight_id: int, num_adults: int = 1, num_infants: int = 0) -> BookingOut | ErrorResponse:
+    """Book a seat on a specific flight for a user with optional infants."""
+    # Validate infant count
+    if num_infants > num_adults * 2:
+        return ErrorResponse(
+            error="Too many infants",
+            error_code="INFANT_LIMIT_EXCEEDED",
+            details=f"Number of infants ({num_infants}) cannot exceed 2 per adult. With {num_adults} adult(s), maximum {num_adults * 2} infant(s) allowed."
+        )
     # Check flight exists
     flight = db.query(Flight).filter(Flight.flight_id == flight_id).first()
     if not flight:
@@ -15,12 +22,12 @@ def book_flight(db: Session, user_id: int, name: str, flight_id: int) -> Booking
             details=f"The specified flight_id {flight_id} does not exist in our system. Please check the flight_id or use list_flights to see available flights."
         )
 
-    # Check seats available
-    if flight.seats_available < 1:
+    # Check seats available (only adults need seats, infants sit on laps)
+    if flight.seats_available < num_adults:
         return ErrorResponse(
-            error="No seats available",
-            error_code="NO_SEATS_AVAILABLE",
-            details="The flight is fully booked. Please check other flights or try again later if seats become available."
+            error="Not enough seats available",
+            error_code="INSUFFICIENT_SEATS",
+            details=f"The flight has only {flight.seats_available} seat(s) available, but {num_adults} adult seat(s) requested. Infants do not require separate seats."
         )
 
     # Check user exists and name matches
@@ -40,13 +47,15 @@ def book_flight(db: Session, user_id: int, name: str, flight_id: int) -> Booking
                 details=f"User with ID {user_id} is not registered in our system. The user might need to register first, or you may need to check if the user_id is correct."
             )
 
-    # Create booking
-    flight.seats_available -= 1
+    # Create booking (only decrement seats by number of adults)
+    flight.seats_available -= num_adults
     new_booking = Booking(
         user_id=user_id,
         flight_id=flight_id,
         status="booked",
-        booking_time=datetime.utcnow().isoformat()
+        booking_time=datetime.utcnow().isoformat(),
+        num_adults=num_adults,
+        num_infants=num_infants
     )
     db.add(new_booking)
     db.commit()
@@ -71,10 +80,11 @@ def cancel_booking(db: Session, booking_id: int) -> BookingOut | ErrorResponse:
             details=f"Booking {booking_id} is already cancelled and cannot be cancelled again. The booking status is currently '{booking.status}'. If you need to make changes, please contact support."
         )
 
-    # Restore seat
+    # Restore seats (restore number of adults, infants don't use seats)
     flight = db.query(Flight).filter(Flight.flight_id == booking.flight_id).first()
     if flight:
-        flight.seats_available += 1
+        num_adults_to_restore = getattr(booking, 'num_adults', 1)  # Default to 1 for backward compatibility
+        flight.seats_available += num_adults_to_restore
 
     booking.status = "cancelled"
     db.commit()

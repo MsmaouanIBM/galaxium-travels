@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Flight } from '../../types';
-import { Modal, Button } from '../common';
-import { Plane, Calendar, Clock, DollarSign } from 'lucide-react';
+import { Modal, Button, Input } from '../common';
+import { Plane, Calendar, Clock, DollarSign, Users, Baby } from 'lucide-react';
 import { formatCurrency, formatDate, calculateDuration } from '../../utils/formatters';
 import { bookFlight, isErrorResponse } from '../../services/api';
 import { useUser } from '../../hooks/useUser';
@@ -17,12 +17,27 @@ interface BookingModalProps {
 export const BookingModal = ({ isOpen, onClose, flight, onSuccess }: BookingModalProps) => {
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
+  const [numAdults, setNumAdults] = useState(1);
+  const [numInfants, setNumInfants] = useState(0);
 
   if (!flight) return null;
+
+  const maxInfants = numAdults * 2;
+  const totalPrice = flight.price * numAdults;
 
   const handleConfirmBooking = async () => {
     if (!user) {
       toast.error('Please sign in to book a flight');
+      return;
+    }
+
+    if (numInfants > maxInfants) {
+      toast.error(`Maximum ${maxInfants} infant(s) allowed for ${numAdults} adult(s)`);
+      return;
+    }
+
+    if (numAdults > flight.seats_available) {
+      toast.error(`Only ${flight.seats_available} seat(s) available`);
       return;
     }
 
@@ -33,6 +48,8 @@ export const BookingModal = ({ isOpen, onClose, flight, onSuccess }: BookingModa
         user_id: user.user_id,
         name: user.name,
         flight_id: flight.flight_id,
+        num_adults: numAdults,
+        num_infants: numInfants,
       });
 
       if (isErrorResponse(result)) {
@@ -110,11 +127,66 @@ export const BookingModal = ({ isOpen, onClose, flight, onSuccess }: BookingModa
           </div>
         </div>
 
+        {/* Passenger Selection */}
+        <div className="glass-card p-4 bg-white/5 space-y-4">
+          <h4 className="text-sm font-semibold text-star-white mb-3">
+            Passenger Details
+          </h4>
+          
+          {/* Number of Adults */}
+          <div>
+            <label className="block text-sm font-medium text-star-white mb-2 flex items-center gap-2">
+              <Users size={16} className="text-cosmic-purple" />
+              Number of Adults
+            </label>
+            <Input
+              type="number"
+              min="1"
+              max={flight.seats_available}
+              value={numAdults}
+              onChange={(e) => {
+                const value = parseInt(e.target.value) || 1;
+                setNumAdults(Math.max(1, Math.min(value, flight.seats_available)));
+                // Adjust infants if they exceed the new limit
+                if (numInfants > value * 2) {
+                  setNumInfants(value * 2);
+                }
+              }}
+              className="w-full"
+            />
+            <p className="text-xs text-star-white/60 mt-1">
+              {flight.seats_available} seat(s) available
+            </p>
+          </div>
+
+          {/* Number of Infants */}
+          <div>
+            <label className="block text-sm font-medium text-star-white mb-2 flex items-center gap-2">
+              <Baby size={16} className="text-cosmic-purple" />
+              Number of Infants
+            </label>
+            <Input
+              type="number"
+              min="0"
+              max={maxInfants}
+              value={numInfants}
+              onChange={(e) => {
+                const value = parseInt(e.target.value) || 0;
+                setNumInfants(Math.max(0, Math.min(value, maxInfants)));
+              }}
+              className="w-full"
+            />
+            <p className="text-xs text-star-white/60 mt-1">
+              Infants (under 2) do not get their own seat. Max {maxInfants} for {numAdults} adult(s).
+            </p>
+          </div>
+        </div>
+
         {/* Passenger Info */}
         {user && (
           <div className="glass-card p-4 bg-white/5">
             <h4 className="text-sm font-semibold text-star-white mb-2">
-              Passenger Information
+              Booking For
             </h4>
             <p className="text-star-white">{user.name}</p>
             <p className="text-star-white/60 text-sm">{user.email}</p>
@@ -128,7 +200,7 @@ export const BookingModal = ({ isOpen, onClose, flight, onSuccess }: BookingModa
             <span className="text-white font-semibold">Total Price</span>
           </div>
           <span className="text-2xl font-bold text-white">
-            {formatCurrency(flight.price)}
+            {formatCurrency(totalPrice)}
           </span>
         </div>
 

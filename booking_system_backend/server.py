@@ -28,14 +28,16 @@ def list_flights() -> list[FlightOut]:
 
 
 @mcp.tool()
-def book_flight(user_id: int, name: str, flight_id: int) -> BookingOut:
-    """Book a seat on a specific flight for a user.
+def book_flight(user_id: int, name: str, flight_id: int, num_adults: int = 1, num_infants: int = 0) -> BookingOut:
+    """Book a seat on a specific flight for a user with optional infants.
     Requires user_id, name, and flight_id.
-    Decrements available seats if successful.
+    Optional: num_adults (default 1) and num_infants (default 0, max 2 per adult).
+    Infants do not require separate seats.
+    Decrements available seats by num_adults if successful.
     Returns booking details or raises an error if booking is not possible."""
     db = SessionLocal()
     try:
-        result = booking.book_flight(db, user_id, name, flight_id)
+        result = booking.book_flight(db, user_id, name, flight_id, num_adults, num_infants)
         if isinstance(result, ErrorResponse):
             raise Exception(result.details or result.error)
         return result
@@ -144,11 +146,13 @@ def get_flights(db: Session = Depends(get_db)):
 
 @app.post("/book", response_model=Union[BookingOut, ErrorResponse], tags=["Bookings"])
 def book_flight_endpoint(request: BookingRequest, db: Session = Depends(get_db)):
-    """Book a seat on a specific flight for a user.
+    """Book a seat on a specific flight for a user with optional infants.
 
-    Requires user_id, name, and flight_id. Decrements available seats if successful.
+    Requires user_id, name, and flight_id.
+    Optional: num_adults (default 1) and num_infants (default 0, max 2 per adult).
+    Infants do not require separate seats. Decrements available seats by num_adults if successful.
     """
-    return booking.book_flight(db, request.user_id, request.name, request.flight_id)
+    return booking.book_flight(db, request.user_id, request.name, request.flight_id, request.num_adults, request.num_infants)
 
 
 @app.get("/bookings/{user_id}", response_model=list[BookingOut], tags=["Bookings"])
