@@ -59,7 +59,7 @@ export const Header = () => {
           {/* User Section */}
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-2 text-sm text-gray-300">
-              <User size={16} />
+              <User size={16} className="text-purple-500" />
               Siddhartha Sood
             </span>
             <button
