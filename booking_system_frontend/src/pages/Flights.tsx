@@ -86,7 +86,7 @@ export const Flights = () => {
         className="text-center"
       >
         <h1 className="text-4xl md:text-5xl font-bold text-star-white mb-4">
-          Available <span className="bg-cosmic-gradient bg-clip-text text-transparent">Flights</span>
+          <span className="bg-cosmic-gradient bg-clip-text text-transparent">Available Flights</span>
         </h1>
         <p className="text-star-white/70 text-lg">
           Choose your destination and embark on an interplanetary adventure
