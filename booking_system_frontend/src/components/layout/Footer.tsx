@@ -31,6 +31,13 @@ export const Footer = () => {
             </a>
           </div>
         </div>
+        
+        {/* Team Credit */}
+        <div className="mt-04 text-center">
+          <div className="text-carbon-text-secondary text-sm">
+            Built by <span className="text-carbon-interactive font-semibold">TrueNorth AI</span>
+          </div>
+        </div>
       </div>
     </footer>
   );
