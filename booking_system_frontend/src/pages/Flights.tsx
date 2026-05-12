@@ -85,8 +85,9 @@ export const Flights = () => {
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
-          Available Flights
+        <h1 className="text-4xl md:text-5xl font-bold mb-2">
+          <span className="text-white">Available </span>
+          <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Flights</span>
         </h1>
         <p className="text-star-white/70 text-lg">
           Choose your destination and embark on an interplanetary adventure

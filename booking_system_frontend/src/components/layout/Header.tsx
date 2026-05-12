@@ -20,9 +20,9 @@ export const Header = () => {
               whileHover={{ rotate: 15 }}
               transition={{ duration: 0.3 }}
             >
-              <Rocket className="text-carbon-interactive" size={32} />
+              <Rocket className="text-transparent bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text" size={32} style={{ WebkitTextFillColor: 'transparent', WebkitBackgroundClip: 'text' }} />
             </motion.div>
-            <span className="text-2xl font-normal text-carbon-text-primary">
+            <span className="text-2xl font-normal bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
               Galaxium Travels
             </span>
           </Link>

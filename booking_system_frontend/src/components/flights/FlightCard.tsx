@@ -59,7 +59,7 @@ export const FlightCard = ({ flight, onBook }: FlightCardProps) => {
               <p className="text-sm text-gray-300">
                 {formatDate(flight.departure_time, 'MMM dd, yyyy')}
               </p>
-              <p className="text-lg font-semibold text-white">
+              <p className="text-lg font-semibold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
                 {formatTime(flight.departure_time)}
               </p>
             </div>
@@ -68,7 +68,7 @@ export const FlightCard = ({ flight, onBook }: FlightCardProps) => {
               <p className="text-sm text-gray-300">
                 {formatDate(flight.arrival_time, 'MMM dd, yyyy')}
               </p>
-              <p className="text-lg font-semibold text-white">
+              <p className="text-lg font-semibold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
                 {formatTime(flight.arrival_time)}
               </p>
             </div>
@@ -86,7 +86,10 @@ export const FlightCard = ({ flight, onBook }: FlightCardProps) => {
           <div className="space-y-1">
             <div className="flex items-baseline gap-2">
               <span className="text-2xl font-bold text-white">
-                ${economyPrice.toLocaleString()} - ${galaxiumPrice.toLocaleString()}
+                ${economyPrice.toLocaleString()}
+              </span>
+              <span className="text-lg text-gray-400">
+                - ${galaxiumPrice.toLocaleString()}
               </span>
             </div>
             <p className="text-sm text-gray-400">Starting from Economy</p>
