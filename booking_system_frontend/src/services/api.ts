@@ -8,9 +8,27 @@ import type {
   ErrorResponse,
 } from '../types';
 
+// Resolve API base URL with priority order:
+// 1. VITE_API_URL environment variable (primary source)
+// 2. Fallback to localhost:8080 for local development
+const getBaseURL = (): string => {
+  const envApiUrl = import.meta.env.VITE_API_URL;
+  
+  if (!envApiUrl || envApiUrl.trim() === '') {
+    console.warn(
+      '⚠️ VITE_API_URL environment variable is not set. ' +
+      'Using fallback: http://localhost:8080 for local development. ' +
+      'Set VITE_API_URL in your .env file for production deployments.'
+    );
+    return 'http://localhost:8080';
+  }
+  
+  return envApiUrl;
+};
+
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
+  baseURL: getBaseURL(),
   headers: {
     'Content-Type': 'application/json',
   },
