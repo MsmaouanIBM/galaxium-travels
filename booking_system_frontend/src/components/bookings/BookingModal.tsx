@@ -20,17 +20,19 @@ export const BookingModal = ({ isOpen, onClose, flight, onSuccess }: BookingModa
   const [numAdults, setNumAdults] = useState(1);
   const [numInfants, setNumInfants] = useState(0);
 
+  // Check if flight has already departed
+  // MUST be called before any early returns to maintain hook order
+  const hasFlightDeparted = useMemo(() => {
+    if (!flight) return false;
+    const now = new Date();
+    const departureTime = new Date(flight.departure_time);
+    return now > departureTime;
+  }, [flight]);
+
   if (!flight) return null;
 
   const maxInfants = numAdults * 2;
   const totalPrice = flight.price * numAdults;
-
-  // Check if flight has already departed
-  const hasFlightDeparted = useMemo(() => {
-    const now = new Date();
-    const departureTime = new Date(flight.departure_time);
-    return now > departureTime;
-  }, [flight.departure_time]);
 
   const handleConfirmBooking = async () => {
     if (!user) {
