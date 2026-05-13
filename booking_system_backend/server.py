@@ -7,7 +7,7 @@ from typing import Union
 from db import SessionLocal, init_db, get_db
 from seed import seed
 from services import flight, user, booking
-from schemas import FlightOut, BookingOut, UserOut, ErrorResponse, BookingRequest, UserRegistration
+from schemas import FlightOut, BookingOut, UserOut, ErrorResponse, BookingRequest, UserRegistration, CancellationResponse
 
 
 # ==================== MCP SERVER (for AI agents) ====================
@@ -164,7 +164,7 @@ def get_user_bookings(user_id: int, db: Session = Depends(get_db)):
     return booking.get_bookings(db, user_id)
 
 
-@app.post("/cancel/{booking_id}", response_model=Union[BookingOut, ErrorResponse], tags=["Bookings"])
+@app.post("/cancel/{booking_id}", response_model=Union[CancellationResponse, ErrorResponse], tags=["Bookings"])
 def cancel_booking_endpoint(booking_id: int, db: Session = Depends(get_db)):
     """Cancel an existing booking by its booking_id.
 
