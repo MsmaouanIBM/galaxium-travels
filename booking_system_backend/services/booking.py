@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from models import User, Flight, Booking
 from schemas import BookingOut, ErrorResponse, CancellationResponse
 
@@ -23,7 +23,7 @@ def book_flight(db: Session, user_id: int, name: str, flight_id: int, num_adults
         )
 
     # Check if flight has already departed
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     departure_time = datetime.fromisoformat(flight.departure_time.replace('Z', '+00:00'))
     if now > departure_time:
         return ErrorResponse(
@@ -63,7 +63,7 @@ def book_flight(db: Session, user_id: int, name: str, flight_id: int, num_adults
         user_id=user_id,
         flight_id=flight_id,
         status="booked",
-        booking_time=datetime.utcnow().isoformat(),
+        booking_time=datetime.now(timezone.utc).isoformat(),
         num_adults=num_adults,
         num_infants=num_infants
     )
@@ -100,7 +100,7 @@ def cancel_booking(db: Session, booking_id: int) -> CancellationResponse | Error
         )
 
     # Calculate refund based on 24-hour rule
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     departure_time = datetime.fromisoformat(flight.departure_time.replace('Z', '+00:00'))
     hours_until_departure = (departure_time - now).total_seconds() / 3600
     
