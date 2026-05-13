@@ -24,8 +24,8 @@ def fix_arrival_dates():
             print(f"\nUpdating Mars -> Earth flight (ID: {mars_earth.flight_id}):")
             print(f"  Old departure: {mars_earth.departure_time}")
             print(f"  Old arrival: {mars_earth.arrival_time}")
-            mars_earth.departure_time = "2099-01-03T17:30:00"
-            mars_earth.arrival_time = "2099-01-04T01:30:00"
+            setattr(mars_earth, "departure_time", "2099-01-03T17:30:00")
+            setattr(mars_earth, "arrival_time", "2099-01-04T01:30:00")
             print(f"  New departure: {mars_earth.departure_time}")
             print(f"  New arrival: {mars_earth.arrival_time}")
         
@@ -39,8 +39,8 @@ def fix_arrival_dates():
             print(f"\nUpdating Jupiter -> Europa flight (ID: {jupiter_europa.flight_id}):")
             print(f"  Old departure: {jupiter_europa.departure_time}")
             print(f"  Old arrival: {jupiter_europa.arrival_time}")
-            jupiter_europa.departure_time = "2099-01-05T20:30:00"
-            jupiter_europa.arrival_time = "2099-01-06T00:30:00"
+            setattr(jupiter_europa, "departure_time", "2099-01-05T20:30:00")
+            setattr(jupiter_europa, "arrival_time", "2099-01-06T00:30:00")
             print(f"  New departure: {jupiter_europa.departure_time}")
             print(f"  New arrival: {jupiter_europa.arrival_time}")
         
