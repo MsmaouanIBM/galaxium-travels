@@ -119,7 +119,7 @@ def cancel_booking(db: Session, booking_id: int) -> CancellationResponse | Error
 
     # Update booking status and set cancelled_at timestamp
     booking.status = "cancelled"
-    booking.cancelled_at = now
+    setattr(booking, 'cancelled_at', now.isoformat())
     
     db.commit()
     db.refresh(booking)
@@ -130,7 +130,7 @@ def cancel_booking(db: Session, booking_id: int) -> CancellationResponse | Error
         status=booking.status,
         refund_status=refund_status,
         refunded_amount=refunded_amount,
-        cancelled_at=booking.cancelled_at.isoformat()
+        cancelled_at=booking.cancelled_at
     )
 
 

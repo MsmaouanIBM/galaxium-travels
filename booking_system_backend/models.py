@@ -28,4 +28,4 @@ class Booking(Base):
     booking_time = Column(String, nullable=False)
     num_adults = Column(Integer, nullable=False, default=1)
     num_infants = Column(Integer, nullable=False, default=0)
-    cancelled_at = Column(DateTime, nullable=True, default=None)
+    cancelled_at = Column(String, nullable=True, default=None)
